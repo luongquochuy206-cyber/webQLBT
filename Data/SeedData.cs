@@ -111,6 +111,40 @@ namespace QLBaiGuiXe.Data
                     new PhieuSuCo { ThietBiId = hvac.Id, TieuDe = "Điều hòa làm mát yếu", MoTa = "Nhiệt độ phòng máy cao hơn cài đặt", MucDo = "Thấp", TrangThai = "Mới tiếp nhận", NguoiBao = "Nguyễn An", NhanVienXuLy = "Chưa phân công", NgayTao = DateTime.Now.AddDays(-1) });
                 await db.SaveChangesAsync();
             }
+
+            if (!await db.SinhViens.AnyAsync())
+            {
+                var sv = new SinhVien { MaSinhVien = "DTC245200050", HoTen = "Lê Anh Đức", Email = "dtc245200050@ictu.edu.vn", Nganh = "Công nghệ thông tin", LopHanhChinh = "K23.K1.CNTT", Khoa = 23 };
+                db.SinhViens.Add(sv);
+                var studentLogin = new TaiKhoan { TenDangNhap = sv.MaSinhVien, VaiTro = "SinhVien", TrangThai = true };
+                studentLogin.MatKhauHash = hasher.HashPassword(studentLogin, "123456");
+                db.TaiKhoans.Add(studentLogin);
+                var csdl = new HocPhan { MaHocPhan = "CSDL", TenHocPhan = "Cơ sở dữ liệu", TinChi = 3 };
+                var ctdl = new HocPhan { MaHocPhan = "CTDL", TenHocPhan = "Cấu trúc dữ liệu và giải thuật", TinChi = 3 };
+                var cnpm = new HocPhan { MaHocPhan = "SE301", TenHocPhan = "Công nghệ phần mềm", TinChi = 3, MaTienQuyet = "CTDL" };
+                var ai = new HocPhan { MaHocPhan = "AIA331", TenHocPhan = "Ứng dụng trí tuệ nhân tạo", TinChi = 3, MaTienQuyet = "CSDL" };
+                var web = new HocPhan { MaHocPhan = "WEB202", TenHocPhan = "Lập trình ứng dụng web", TinChi = 3, MaTienQuyet = "CTDL" };
+                var mạng = new HocPhan { MaHocPhan = "NET201", TenHocPhan = "Mạng máy tính", TinChi = 3 };
+                db.HocPhans.AddRange(csdl, ctdl, cnpm, ai, web, mạng);
+                await db.SaveChangesAsync();
+                var sections = new[] {
+                    new LopHocPhan { MaLop="AIA331.01", HocPhanId=ai.Id, GiangVien="Nguyễn Tuấn Anh", Phong="B3-302", Thu=2, TietBatDau=1, SoTiet=3, SiSoToiDa=40 },
+                    new LopHocPhan { MaLop="SE301.01", HocPhanId=cnpm.Id, GiangVien="Trần Thu Hà", Phong="B2-205", Thu=3, TietBatDau=4, SoTiet=3, SiSoToiDa=35 },
+                    new LopHocPhan { MaLop="WEB202.01", HocPhanId=web.Id, GiangVien="Phạm Quốc Bảo", Phong="B3-401", Thu=4, TietBatDau=1, SoTiet=3, SiSoToiDa=40 },
+                    new LopHocPhan { MaLop="NET201.01", HocPhanId=mạng.Id, GiangVien="Đỗ Minh Tuấn", Phong="A1-204", Thu=5, TietBatDau=7, SoTiet=3, SiSoToiDa=40 },
+                    new LopHocPhan { MaLop="AIA331.02", HocPhanId=ai.Id, GiangVien="Nguyễn Tuấn Anh", Phong="B3-303", Thu=6, TietBatDau=1, SoTiet=3, SiSoToiDa=35 }
+                };
+                db.LopHocPhans.AddRange(sections);
+                await db.SaveChangesAsync();
+                var csdlClass = new LopHocPhan { MaLop="CSDL.KQ", HocPhanId=csdl.Id, GiangVien="Nguyễn Thị Mai", Phong="B1-101", Thu=2, TietBatDau=4, SoTiet=3, SiSoToiDa=40 };
+                var ctdlClass = new LopHocPhan { MaLop="CTDL.KQ", HocPhanId=ctdl.Id, GiangVien="Lê Văn Nam", Phong="B1-201", Thu=3, TietBatDau=1, SoTiet=3, SiSoToiDa=40 };
+                db.LopHocPhans.AddRange(csdlClass, ctdlClass);
+                await db.SaveChangesAsync();
+                db.DangKyHocPhans.AddRange(
+                    new DangKyHocPhan { SinhVienId=sv.Id, LopHocPhanId=csdlClass.Id, TrangThai="Đã hoàn thành", DiemQuaTrinh=8, DiemThi=8.5 },
+                    new DangKyHocPhan { SinhVienId=sv.Id, LopHocPhanId=ctdlClass.Id, TrangThai="Đã hoàn thành", DiemQuaTrinh=7.5, DiemThi=8 });
+                await db.SaveChangesAsync();
+            }
         }
     }
 }

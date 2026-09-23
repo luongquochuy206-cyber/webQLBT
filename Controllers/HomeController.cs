@@ -17,12 +17,12 @@ namespace QLBaiGuiXe.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.DeviceCount = await _context.ThietBis.CountAsync();
-            ViewBag.OpenTickets = await _context.PhieuSuCos.CountAsync(x => x.TrangThai != "Hoàn tất");
-            ViewBag.DueSoon = await _context.LichBaoTris.CountAsync(x => x.TrangThai == "Đã lên lịch" && x.NgayDuKien <= DateTime.Today.AddDays(7));
-            ViewBag.BrokenDevices = await _context.ThietBis.CountAsync(x => x.TrangThai == "Cần sửa chữa");
-            ViewBag.RecentTickets = await _context.PhieuSuCos.Include(x => x.ThietBi).OrderByDescending(x => x.NgayTao).Take(5).ToListAsync();
-            ViewBag.Upcoming = await _context.LichBaoTris.Include(x => x.ThietBi).Where(x => x.TrangThai == "Đã lên lịch").OrderBy(x => x.NgayDuKien).Take(5).ToListAsync();
+            ViewBag.StudentCount = await _context.SinhViens.CountAsync();
+            ViewBag.CourseCount = await _context.HocPhans.CountAsync();
+            ViewBag.ClassCount = await _context.LopHocPhans.CountAsync();
+            ViewBag.EnrollmentCount = await _context.DangKyHocPhans.CountAsync();
+            ViewBag.RecentEnrollments = await _context.DangKyHocPhans.Include(x => x.SinhVien).Include(x => x.LopHocPhan!).ThenInclude(x => x.HocPhan).OrderByDescending(x => x.NgayDangKy).Take(6).ToListAsync();
+            ViewBag.OpenSections = await _context.LopHocPhans.Include(x => x.HocPhan).Include(x => x.DangKys).OrderBy(x => x.Thu).ThenBy(x => x.TietBatDau).Take(5).ToListAsync();
             return View();
         }
     }

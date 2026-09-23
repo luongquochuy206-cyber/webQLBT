@@ -64,6 +64,15 @@ namespace QLBaiGuiXe.Controllers
                 claims.Add(new Claim("NhanVienId", taiKhoan.NhanVien.Id.ToString()));
                 claims.Add(new Claim("HoTen", taiKhoan.NhanVien.HoTen));
             }
+            else
+            {
+                var student = await _context.SinhViens.FirstOrDefaultAsync(x => x.MaSinhVien == taiKhoan.TenDangNhap);
+                if (student != null)
+                {
+                    claims.Add(new Claim("HoTen", student.HoTen));
+                    claims.Add(new Claim("SinhVienId", student.Id.ToString()));
+                }
+            }
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);

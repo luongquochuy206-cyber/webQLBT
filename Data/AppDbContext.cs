@@ -19,6 +19,10 @@ namespace QLBaiGuiXe.Data
         public DbSet<ThietBi> ThietBis => Set<ThietBi>();
         public DbSet<LichBaoTri> LichBaoTris => Set<LichBaoTri>();
         public DbSet<PhieuSuCo> PhieuSuCos => Set<PhieuSuCo>();
+        public DbSet<SinhVien> SinhViens => Set<SinhVien>();
+        public DbSet<HocPhan> HocPhans => Set<HocPhan>();
+        public DbSet<LopHocPhan> LopHocPhans => Set<LopHocPhan>();
+        public DbSet<DangKyHocPhan> DangKyHocPhans => Set<DangKyHocPhan>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +38,17 @@ namespace QLBaiGuiXe.Data
             modelBuilder.Entity<ThietBi>().ToTable("ThietBi");
             modelBuilder.Entity<LichBaoTri>().ToTable("LichBaoTri");
             modelBuilder.Entity<PhieuSuCo>().ToTable("PhieuSuCo");
+            modelBuilder.Entity<SinhVien>().ToTable("SinhVien");
+            modelBuilder.Entity<HocPhan>().ToTable("HocPhan");
+            modelBuilder.Entity<LopHocPhan>().ToTable("LopHocPhan");
+            modelBuilder.Entity<DangKyHocPhan>().ToTable("DangKyHocPhan");
+            modelBuilder.Entity<SinhVien>().HasIndex(x => x.MaSinhVien).IsUnique();
+            modelBuilder.Entity<HocPhan>().HasIndex(x => x.MaHocPhan).IsUnique();
+            modelBuilder.Entity<LopHocPhan>().HasIndex(x => x.MaLop).IsUnique();
+            modelBuilder.Entity<LopHocPhan>().HasOne(x => x.HocPhan).WithMany().HasForeignKey(x => x.HocPhanId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<DangKyHocPhan>().HasIndex(x => new { x.SinhVienId, x.LopHocPhanId }).IsUnique();
+            modelBuilder.Entity<DangKyHocPhan>().HasOne(x => x.SinhVien).WithMany(x => x.DangKys).HasForeignKey(x => x.SinhVienId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<DangKyHocPhan>().HasOne(x => x.LopHocPhan).WithMany(x => x.DangKys).HasForeignKey(x => x.LopHocPhanId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ThietBi>().HasIndex(x => x.MaThietBi).IsUnique();
             modelBuilder.Entity<LichBaoTri>().HasOne(x => x.ThietBi).WithMany(x => x.LichBaoTris).HasForeignKey(x => x.ThietBiId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PhieuSuCo>().HasOne(x => x.ThietBi).WithMany(x => x.PhieuSuCos).HasForeignKey(x => x.ThietBiId).OnDelete(DeleteBehavior.Restrict);

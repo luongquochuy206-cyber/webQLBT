@@ -1,60 +1,30 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MaintainIQ</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · UniFlow</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /><link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark topbar">
-        <div class="container">
-            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index"><span class="brand-mark">M</span> MaintainIQ</a>
-
-            @if (User.Identity?.IsAuthenticated == true)
-            {
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Tổng quan</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Devices">Thiết bị</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Schedule">Lịch bảo trì</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Tickets">Phiếu sự cố</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Assistant">Trợ lý AI</a></li>
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Index">Quản lý bảo trì</a></li>
-                        }
-                    </ul>
-
-                    <div class="d-flex align-items-center gap-3">
-                        <span class="text-white small">Xin chào, @User.FindFirst("HoTen")?.Value</span>
-                        <a class="btn btn-light btn-sm" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
-                    </div>
-                </div>
-            }
-        </div>
+<aside class="sidebar">
+    <a class="brand" asp-controller="Home" asp-action="Index"><span class="brand-icon">U</span><span>UniFlow<small>ACADEMIC PORTAL</small></span></a>
+    <div class="side-caption">KHÔNG GIAN HỌC TẬP</div>
+    <nav class="side-nav">
+        <a asp-controller="Home" asp-action="Index"><span>⌂</span>Tổng quan</a>
+        @if (User.IsInRole("Admin")) { <a asp-controller="Academic" asp-action="Students"><span>♙</span>Sinh viên</a> }
+        <a asp-controller="Academic" asp-action="Courses"><span>▤</span>Học phần &amp; lớp</a>
+        <a asp-controller="Academic" asp-action="Enrollments"><span>＋</span>Đăng ký học phần</a>
+        <a asp-controller="Academic" asp-action="Grades"><span>◫</span>Kết quả học tập</a>
+        <div class="side-caption second">TRỢ LÝ HỌC VỤ</div>
+        <a asp-controller="Academic" asp-action="Assistant"><span>✧</span>AI tư vấn học tập <i>AI</i></a>
     </nav>
-
-    <main class="container-fluid app-content">
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success">@TempData["Success"]</div>
-        }
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger">@TempData["Error"]</div>
-        }
-
-        @RenderBody()
-    </main>
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+    <div class="sidebar-bottom"><div class="semester-chip"><small>HỌC KỲ HIỆN TẠI</small><b>2026 – 2027 · HK1</b><span>● Đang mở đăng ký</span></div><div class="side-user"><div class="avatar">@(User.FindFirst("HoTen")?.Value?.FirstOrDefault() ?? 'Đ')</div><div><b>@(User.FindFirst("HoTen")?.Value ?? "Lê Anh Đức")</b><small>@(User.IsInRole("Admin") ? "Phòng đào tạo" : User.IsInRole("SinhVien") ? "Sinh viên" : "Giảng viên")</small></div><a asp-controller="Account" asp-action="Logout" title="Đăng xuất">↗</a></div></div>
+</aside>
+<main class="main-area"><header class="topbar"><button class="mobile-menu" onclick="document.body.classList.toggle('menu-open')">☰</button><div class="crumb">CỔNG THÔNG TIN <span>/</span> <b>@ViewData["Title"]</b></div><div class="top-actions"><span class="term-label">Năm học 2026 – 2027</span><button class="icon-button" title="Thông báo">♧<em></em></button><div class="avatar small-avatar">@(User.FindFirst("HoTen")?.Value?.FirstOrDefault() ?? 'Đ')</div></div></header>
+<div class="page-wrap">
+    @if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
+    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+    @RenderBody()
+</div></main>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>@await RenderSectionAsync("Scripts", required: false)
+</body></html>
