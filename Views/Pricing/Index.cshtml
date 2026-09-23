@@ -1,0 +1,33 @@
+﻿@model List<BangGia>
+@{
+    ViewData["Title"] = "Bảng giá";
+}
+<h2 class="page-title">Quản lý bảng giá</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-warning">
+            <tr>
+                <th>Loại xe</th>
+                <th>Giá lượt</th>
+                <th>Giá tháng</th>
+                <th>Áp dụng</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.LoaiXe</td>
+                    <td>@item.GiaLuot.ToString("N0")</td>
+                    <td>@item.GiaThang.ToString("N0")</td>
+                    <td>@(item.DangApDung ? "Có" : "Không")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

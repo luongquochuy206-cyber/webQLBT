@@ -1,0 +1,35 @@
+﻿@model BangGia
+@{
+    ViewData["Title"] = "Sửa bảng giá";
+}
+<h2 class="page-title">Sửa bảng giá</h2>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input asp-for="Id" type="hidden" />
+
+            <div class="mb-3">
+                <label class="form-label">Loại xe</label>
+                <input asp-for="LoaiXe" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Giá lượt</label>
+                <input asp-for="GiaLuot" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Giá tháng</label>
+                <input asp-for="GiaThang" class="form-control" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="DangApDung" class="form-check-input" />
+                <label asp-for="DangApDung" class="form-check-label">Đang áp dụng</label>
+            </div>
+
+            <button class="btn btn-warning fw-bold">Cập nhật</button>
+        </form>
+    </div>
+</div>

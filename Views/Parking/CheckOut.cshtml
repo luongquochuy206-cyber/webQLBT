@@ -1,0 +1,40 @@
+﻿@model CheckOutVM
+@{
+    ViewData["Title"] = "Xe ra";
+}
+<h2 class="page-title">Xe ra bãi</h2>
+
+<div class="card form-card mb-4">
+    <div class="card-body">
+        <form asp-action="FindCheckOut" method="post">
+            <div class="row g-2">
+                <div class="col-md-8">
+                    <input asp-for="MaVeCode" class="form-control" placeholder="Nhập mã vé" />
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-warning w-100 fw-bold">Tìm xe</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.DaTimThay)
+{
+    <div class="card form-card">
+        <div class="card-body">
+            <div class="mb-2"><strong>Mã vé:</strong> @Model.MaVeCode</div>
+            <div class="mb-2"><strong>Biển số:</strong> @Model.BienSoXe</div>
+            <div class="mb-2"><strong>Loại xe:</strong> @Model.LoaiXe</div>
+            <div class="mb-2"><strong>Giờ vào:</strong> @Model.ThoiGianVao.ToString("dd/MM/yyyy HH:mm:ss")</div>
+            <div class="mb-2"><strong>Giờ ra:</strong> @Model.ThoiGianRa?.ToString("dd/MM/yyyy HH:mm:ss")</div>
+            <div class="mb-2"><strong>Loại gửi:</strong> @(Model.LaVeThang ? "Vé tháng" : "Vé lượt")</div>
+            <div class="mb-3 text-danger fs-4 fw-bold"><strong>Số tiền:</strong> @Model.SoTien.ToString("N0") VNĐ</div>
+
+            <form asp-action="ConfirmCheckOut" method="post">
+                <input type="hidden" name="luotGuiXeId" value="@Model.LuotGuiXeId" />
+                <button type="submit" class="btn btn-success fw-bold">Xác nhận thanh toán và cho xe ra</button>
+            </form>
+        </div>
+    </div>
+}

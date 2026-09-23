@@ -1,0 +1,38 @@
+﻿@model TicketCodeCreateVM
+@{
+    ViewData["Title"] = "Thêm mã vé";
+}
+<h2 class="page-title">Thêm mã vé hàng loạt</h2>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Prefix</label>
+                <input asp-for="Prefix" class="form-control" placeholder="L hoặc T" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Số bắt đầu</label>
+                <input asp-for="StartNumber" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Số lượng thêm</label>
+                <input asp-for="SoLuong" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Loại mã vé</label>
+                <select asp-for="LoaiMaVe" class="form-select">
+                    <option value="Luot">Luot</option>
+                    <option value="Thang">Thang</option>
+                </select>
+            </div>
+
+            <button class="btn btn-warning fw-bold">Tạo mã vé</button>
+        </form>
+    </div>
+</div>

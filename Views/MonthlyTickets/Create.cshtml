@@ -1,0 +1,63 @@
+﻿@model MonthlyTicketCreateVM
+@{
+    ViewData["Title"] = "Đăng ký vé tháng";
+}
+<h2 class="page-title">Đăng ký vé tháng</h2>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Mã vé tháng</label>
+                <select asp-for="MaVeId" asp-items="ViewBag.MaVeList" class="form-select">
+                    <option value="">-- Chọn mã vé tháng --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Họ tên khách hàng</label>
+                <input asp-for="HoTenKhachHang" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">CCCD</label>
+                <input asp-for="CCCD" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Biển số xe</label>
+                <input asp-for="BienSoXe" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Loại xe</label>
+                <select asp-for="LoaiXe" class="form-select">
+                    @foreach (var item in (List<string>)ViewBag.LoaiXes)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Ngày bắt đầu</label>
+                    <input asp-for="NgayBatDau" type="date" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Ngày hết hạn</label>
+                    <input asp-for="NgayHetHan" type="date" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mt-3 mb-3">
+                <label class="form-label">Số tiền</label>
+                <input asp-for="SoTien" class="form-control" />
+            </div>
+
+            <button class="btn btn-warning fw-bold">Lưu đăng ký</button>
+        </form>
+    </div>
+</div>

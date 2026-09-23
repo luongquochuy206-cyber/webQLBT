@@ -1,0 +1,39 @@
+﻿@model List<LuotGuiXe>
+@{
+    ViewData["Title"] = "Tìm kiếm";
+}
+<h2 class="page-title">Tìm kiếm thông tin xe</h2>
+
+<form method="get" class="mb-3">
+    <input name="keyword" class="form-control" placeholder="Nhập biển số xe hoặc mã vé..." />
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-warning">
+            <tr>
+                <th>Mã vé</th>
+                <th>Biển số</th>
+                <th>Loại xe</th>
+                <th>Giờ vào</th>
+                <th>Giờ ra</th>
+                <th>Trạng thái</th>
+                <th>Số tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MaVe?.MaVeCode</td>
+                    <td>@item.BienSoXe</td>
+                    <td>@item.LoaiXe</td>
+                    <td>@item.ThoiGianVao.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@(item.ThoiGianRa.HasValue? item.ThoiGianRa.Value.ToString("dd/MM/yyyy HH:mm") : "")</td>
+                    <td>@item.TrangThai</td>
+                    <td>@(item.HoaDon?.SoTien.ToString("N0") ?? "0")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

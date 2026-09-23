@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MaintainIQ</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark topbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index"><span class="brand-mark">M</span> MaintainIQ</a>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Tổng quan</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Devices">Thiết bị</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Schedule">Lịch bảo trì</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Tickets">Phiếu sự cố</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Assistant">Trợ lý AI</a></li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Maintenance" asp-action="Index">Quản lý bảo trì</a></li>
+                        }
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-white small">Xin chào, @User.FindFirst("HoTen")?.Value</span>
+                        <a class="btn btn-light btn-sm" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+
+    <main class="container-fluid app-content">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

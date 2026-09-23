@@ -1,0 +1,52 @@
+﻿@model List<DangKyVeThang>
+@{
+    ViewData["Title"] = "Vé tháng";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="page-title mb-0">Quản lý vé tháng</h2>
+    <a asp-action="Create" class="btn btn-warning fw-bold">+ Đăng ký vé tháng</a>
+</div>
+
+<form method="get" class="mb-3">
+    <input name="keyword" class="form-control" placeholder="Tìm theo tên, biển số, CCCD, mã vé..." />
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-warning">
+            <tr>
+                <th>Mã vé</th>
+                <th>Khách hàng</th>
+                <th>CCCD</th>
+                <th>Biển số</th>
+                <th>Loại xe</th>
+                <th>Từ ngày</th>
+                <th>Đến ngày</th>
+                <th>Số tiền</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MaVe?.MaVeCode</td>
+                    <td>@item.HoTenKhachHang</td>
+                    <td>@item.CCCD</td>
+                    <td>@item.BienSoXe</td>
+                    <td>@item.LoaiXe</td>
+                    <td>@item.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                    <td>@item.NgayHetHan.ToString("dd/MM/yyyy")</td>
+                    <td>@item.SoTien.ToString("N0")</td>
+                    <td>@(item.TrangThai ? "Hoạt động" : "Ngừng")</td>
+                    <td>
+                        <form asp-action="ToggleStatus" asp-route-id="@item.Id" method="post">
+                            <button class="btn btn-sm btn-primary">Đổi trạng thái</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

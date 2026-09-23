@@ -1,0 +1,53 @@
+﻿@model List<QLBaiGuiXe.Models.NhanVien>
+@{
+    ViewData["Title"] = "Nhân viên";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="page-title mb-0">Quản lý nhân viên</h2>
+    <a asp-action="Create" class="btn btn-warning fw-bold">+ Thêm nhân viên</a>
+</div>
+
+<form method="get" class="mb-3">
+    <input name="keyword" class="form-control" placeholder="Tìm theo tên, SĐT, email, tài khoản..." />
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-warning">
+            <tr>
+                <th>Họ tên</th>
+                <th>SĐT</th>
+                <th>Email</th>
+                <th>Tài khoản</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th width="190"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.HoTen</td>
+                <td>@item.SoDienThoai</td>
+                <td>@item.Email</td>
+                <td>@item.TaiKhoan?.TenDangNhap</td>
+                <td>@item.TaiKhoan?.VaiTro</td>
+                <td>@(item.TaiKhoan?.TrangThai == true ? "Hoạt động" : "Khóa")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Bạn có chắc muốn xóa nhân viên này?')">
+                            Xóa
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>s

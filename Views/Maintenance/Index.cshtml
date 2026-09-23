@@ -1,0 +1,5 @@
+@model IEnumerable<ThietBi>
+@{ ViewData["Title"] = "Quản lý bảo trì"; }
+<div class="page-heading"><div><div class="eyebrow">QUẢN LÝ VẬN HÀNH</div><h1>Quản lý bảo trì</h1><p>Điều phối thiết bị, lịch bảo trì và phiếu sự cố.</p></div><a class="btn btn-primary" asp-action="CreateDevice">＋ Thêm thiết bị</a></div>
+<div class="stat-grid compact"><div class="stat-card"><div><small>Thiết bị</small><strong>@Model.Count()</strong></div></div><div class="stat-card"><div><small>Sự cố đang mở</small><strong>@ViewBag.OpenTickets</strong></div></div><div class="stat-card"><div><small>Lịch đến hạn trong 7 ngày</small><strong>@ViewBag.DueSoon</strong></div></div></div>
+<div class="panel mt-4"><div class="panel-head"><div><h2>Danh sách thiết bị</h2><p>Tra cứu tài sản và tình trạng thiết bị</p></div><a asp-action="Devices">Mở danh sách →</a></div><div class="table-responsive"><table class="table app-table"><thead><tr><th>Mã</th><th>Tên thiết bị</th><th>Khu vực</th><th>Trạng thái</th></tr></thead><tbody>@foreach(var x in Model.Take(6)){<tr><td>@x.MaThietBi</td><td class="fw-semibold">@x.Ten</td><td>@x.KhuVuc</td><td>@x.TrangThai</td></tr>}</tbody></table></div></div>

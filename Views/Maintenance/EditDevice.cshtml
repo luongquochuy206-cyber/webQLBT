@@ -1,0 +1,2 @@
+@model ThietBi
+@{ ViewData["Title"] = "Sửa thiết bị"; }<div class="page-heading"><div><div class="eyebrow">DANH MỤC TÀI SẢN</div><h1>Cập nhật thiết bị</h1><p>Chỉnh sửa thông tin thiết bị @Model.MaThietBi.</p></div></div><div class="panel form-panel"><form asp-action="EditDevice" asp-route-id="@Model.Id" method="post"><input asp-for="Id" type="hidden"/><partial name="_DeviceForm" model="Model"/></form></div>

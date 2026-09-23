@@ -1,0 +1,102 @@
+﻿@model CheckInVM
+@{
+    ViewData["Title"] = "Xe vào";
+}
+<h2 class="page-title">Xe vào bãi</h2>
+
+<div class="card form-card mb-4 border-warning-subtle">
+    <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <div class="text-muted small">Vé lượt còn trống</div>
+            <div class="fs-3 fw-bold text-warning-emphasis">@ViewBag.TongVeLuotTrongKho</div>
+        </div>
+        <div class="text-muted">
+            Hệ thống sẽ tự cấp mã vé nếu chọn gửi theo vé lượt.
+        </div>
+    </div>
+</div>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="CheckIn" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Biển số xe</label>
+                <input asp-for="BienSoXe" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Loại xe</label>
+                <select asp-for="LoaiXe" class="form-select">
+                    <option value="">-- Chọn loại xe --</option>
+                    @foreach (var item in (List<string>)ViewBag.LoaiXes)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label d-block">Loại gửi</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="LoaiGui" id="loaiGuiLuot" value="Luot" />
+                    <label class="form-check-label" for="loaiGuiLuot">Vé lượt</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="LoaiGui" id="loaiGuiThang" value="Thang" />
+                    <label class="form-check-label" for="loaiGuiThang">Vé tháng</label>
+                </div>
+                <span asp-validation-for="LoaiGui" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3" id="maVeWrapper">
+                <label class="form-label">Mã vé tháng</label>
+                <input asp-for="MaVeCode" class="form-control" placeholder="Nhập mã vé tháng, ví dụ: T001" />
+                <div class="form-text" id="maVeHint">
+                    Chỉ cần nhập khi xe vào bằng vé tháng.
+                </div>
+                <span asp-validation-for="MaVeCode" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-warning fw-bold">Xác nhận xe vào</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const luotRadio = document.getElementById("loaiGuiLuot");
+            const thangRadio = document.getElementById("loaiGuiThang");
+            const maVeInput = document.getElementById("MaVeCode");
+            const maVeWrapper = document.getElementById("maVeWrapper");
+            const maVeHint = document.getElementById("maVeHint");
+
+            function toggleMaVeInput() {
+                const isVeThang = thangRadio && thangRadio.checked;
+                if (!maVeInput || !maVeWrapper || !maVeHint) {
+                    return;
+                }
+
+                maVeWrapper.style.opacity = isVeThang ? "1" : "0.75";
+                maVeInput.disabled = !isVeThang;
+                maVeInput.placeholder = isVeThang
+                    ? "Nhập mã vé tháng, ví dụ: T001"
+                    : "Vé lượt sẽ được hệ thống tự cấp";
+                maVeHint.textContent = isVeThang
+                    ? "Nhập đúng mã vé tháng đã đăng ký cho xe này."
+                    : "Mã vé lượt còn trống sẽ được tự động chọn khi xác nhận.";
+
+                if (!isVeThang) {
+                    maVeInput.value = "";
+                }
+            }
+
+            if (luotRadio) luotRadio.addEventListener("change", toggleMaVeInput);
+            if (thangRadio) thangRadio.addEventListener("change", toggleMaVeInput);
+            toggleMaVeInput();
+        })();
+    </script>
+}

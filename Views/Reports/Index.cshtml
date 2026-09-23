@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Thống kê";
+    var theoLoaiXe = ViewBag.TheoLoaiXe as IEnumerable<dynamic>;
+}
+<h2 class="page-title">Thống kê báo cáo</h2>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-3">
+        <label class="form-label">Từ ngày</label>
+        <input type="date" name="tuNgay" value="@ViewBag.TuNgay" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Đến ngày</label>
+        <input type="date" name="denNgay" value="@ViewBag.DenNgay" class="form-control" />
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-warning fw-bold">Xem thống kê</button>
+    </div>
+</form>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card dashboard-card"><div class="card-body"><h6>Tổng xe gửi</h6><h3>@ViewBag.TongXeGui</h3></div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card"><div class="card-body"><h6>Xe đã ra</h6><h3>@ViewBag.SoXeDaRa</h3></div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card"><div class="card-body"><h6>Còn trong bãi</h6><h3>@ViewBag.SoXeConTrongBai</h3></div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card"><div class="card-body"><h6>Doanh thu</h6><h3>@String.Format("{0:N0}", ViewBag.DoanhThu)</h3></div></div>
+    </div>
+</div>
+
+@if (theoLoaiXe != null)
+{
+    <div class="card form-card">
+        <div class="card-body">
+            <h5 class="mb-3">Thống kê theo loại xe</h5>
+            <table class="table table-bordered">
+                <thead class="table-warning">
+                    <tr>
+                        <th>Loại xe</th>
+                        <th>Số lượng</th>
+                        <th>Doanh thu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in theoLoaiXe)
+                    {
+                        <tr>
+                            <td>@item.LoaiXe</td>
+                            <td>@item.SoLuong</td>
+                            <td>@String.Format("{0:N0}", item.DoanhThu)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
